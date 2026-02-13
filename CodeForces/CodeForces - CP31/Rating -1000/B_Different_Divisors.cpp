@@ -1,35 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool valid(long long x){
-    long long d = 1 , prev = 1;  // 1 itself
-    long long mn = LLONG_MAX ;
+vector<bool> sieve(long long x){
+    vector<bool> prime(x+1 , true);
+    prime[0] = false;
+    prime[1] = false;
 
-    for(long long i = 2 ; i*i <= x ; i++){
-        if(x%i == 0){
-            d++ ;
-            mn = min(mn , i-prev);
-            prev = i ;
+    for(long long i = 2; i*i <= x; i++){
+        if(prime[i]){
+            for(long long j = i*i; j <= x; j += i){
+                prime[j] = false;
+            }
         }
     }
-    return (d>=4 && mn<=2) ;
+    return prime;
 }
 
 int main(){
-	long long t;
-	cin >> t; 
-	while (t--){
-		long long d;
-		cin >> d; 
-        long long ans = 0 ;
-
-        for(long long i = 1 ; ; i++){
-            if(valid(i)){
-                ans = i ;
-                break ;
+    int tt;
+    cin>>tt;
+    const long long int mx= 200000;
+    auto prime = sieve(mx);
+    while(tt--){
+        int d;
+        cin>>d;
+        bool once=false;
+        vector<long long int> ans; 
+        for(int i=d+1;i<=mx;i++){
+            if(prime[i]){
+                 ans.push_back(i);
+                 i+=d-1;
             }
+            if(ans.size()==2) break;
         }
-		cout << ans << endl;
-	}
-	return 0;
+
+        long long m = 1;
+        for(auto& x : ans)  m*=x;
+        cout<<m<<endl;
+    }
 }
