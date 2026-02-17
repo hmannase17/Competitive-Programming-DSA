@@ -42,22 +42,21 @@ void fastIO(){
 void solve(){
     ll n;
     cin >> n;
-    vector<pair<ll , ll>> v(n);
-    for(ll i = 0; i<n; i++) cin >> v[i].first >> v[i].second;
+    vector<ll> v(n) , end(n);
+    for(ll i = 0; i<n; i++) cin >> v[i] >> end[i];
+
     sort(v.begin(), v.end());
+    sort(end.begin(), end.end());
 
     int ans = 1 , ct = 1;
-    int end = v[0].second;
+    int l = 0;
 
     for(int i = 1 ; i<n ; i++){
-        if(v[i].first <= end) {
-            ct++ ;
-            end = min(1LL*end , v[i].second);
+        while(end[l] <= v[i]){  
+            ct-- ;
+            l++;
         }
-        else {
-            ct = 1;
-            end = v[i].second;
-        }
+        ct++;
         ans = max(ans , ct);
     }
     cout << ans << endl;
