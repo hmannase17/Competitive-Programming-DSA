@@ -1,41 +1,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int t;
-    cin >> t;
-    while (t--){
+int main(){
+	int t;
+	cin >> t; 
+	while (t--){
 		long long n;
-		cin >> n;
-        
-        vector<pair<long long , int>> v(n);
-        for(int i = 0 ; i<n ; i++) {
-            cin >> v[i].first;
-            v[i].second = i;
-        }
+		cin >> n; 
+		vector<long long> sizes(n);
+		for (int i = 0; i<n; i++) cin >> sizes[i];
 
-        sort(v.begin() , v.end());
+		map<long long, long long> freq; 
+		for (int i = 0; i<n; i++) freq[sizes[i]]++;
 
-        vector<int> ans(n);
+		long long flag = 0; 
+		for (auto& i : freq){
+			if (i.second == 1){
+				flag = 1;
+				break;
+			}
+		}
 
-        int i = 0;
-        ans[0] = v[n-1].second + 1;
-        for(i = 1 ; i<n-1 ; i++){
-            ans[i] = v[i+1].second + 1;
-        }
+		if (flag){
+			cout << -1 << endl; 
+			continue;
+		}
 
-        ans[n-1] = v[n-2].second + 1;
+		vector<long long> students(n); 
+		for (int i = 0; i<n; i++) students[i] = i+1;
 
-        if(i != n-1){
-            cout << -1 << endl;
-            continue;
-        }
+		long long l = 0, r = 0;
+		while (r<n) {
+			if (sizes[l] == sizes[r]) r++;
+			else {
+				rotate(students.begin() + l, students.begin() + l + 1, students.begin() + r);
+				l = r;
+			}
+		}
+		
+		rotate(students.begin() + l, students.begin() + l + 1, students.begin() + r);
 
-        for(int i = 0 ; i<n ; i++) cout << ans[i] << " ";
-        cout << endl;
-        
-    }
-    return 0;
+		for (auto& i : students) cout << i << " ";
+		cout << endl;
+	}
+	return 0;
 }
+
+
+
