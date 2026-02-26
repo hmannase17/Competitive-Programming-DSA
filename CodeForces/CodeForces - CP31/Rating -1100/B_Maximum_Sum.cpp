@@ -1,87 +1,33 @@
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <cstdlib>
-#include <cstdio>
-#include <climits>
-#include <cfloat>
-#include <cassert>
-#include <vector>
-#include <array>
-#include <deque>
-#include <list>
-#include <stack>
-#include <queue>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <algorithm>
-#include <numeric>
-#include <functional>
-#include <utility>
-#include <bitset>
-#include <chrono>
-#include <random>
-#include <fstream>
-
+#include <bits/stdc++.h>
 using namespace std;
-
 typedef long long ll;
-typedef unsigned long long ull;
-typedef long double ld;
-#define endl '\n'
-
-void fastIO(){
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-}
-
-void solve(){
-    int t ;
-    cin >> t ;
-    while(t--){
-        ll n, k;
-        cin >> n >> k;
-        vector<ll> v(n);
-        ll sum = 0;
-        for(int i = 0 ; i<n ; i++){
-            cin >> v[i];
-            sum += v[i];
-        }
-
-        sort(v.begin() , v.end());
-        int i = 0 , j = 1;
-        int r = v.size()-1;
-
-        while(k--){
-            ll left = v[i] + v[j];
-            ll right = v[r];
-
-        // cout << i << " " << j << " " << r << " " << sum << endl ;
-
-            if(left >= right){
-                r-- ;
-                sum -= right ;
-            }
-            else {
-                i++ ;
-                j++ ;
-                sum -= left ;
-            }
-
-    // cout << i << " " << j << " " << r << " " << sum << endl ;
-    //         cout << endl;
-        }
-
-        cout << sum << endl;
-    }
-}
 
 int main() {
-    fastIO();
-    solve();
-    return 0;
+	int t = 1;
+	cin >> t;  
+
+	while (t--) {
+		ll n, k;
+		cin >> n >> k;  
+		vector<ll> v(n);  
+		for (auto &it : v) cin >> it;  
+
+		sort(v.begin(), v.end());
+
+		vector<ll> pre(n);  
+		pre[0] = v[0];  
+		for (int i = 1; i < n; i++) pre[i] = v[i] + pre[i-1];
+
+		ll ans = 0;  
+		for (int first = 0; first <= k; first++) {  
+			int second = k-first;  
+			int left = 2 * first;  
+			int right = n-second-1;  
+			ll sum = pre[right]-(left == 0 ? 0 : pre[left-1]);  
+			ans = max(ans, sum);  
+		}
+		cout << ans << endl;  
+	}
+
+	return 0;
 }
