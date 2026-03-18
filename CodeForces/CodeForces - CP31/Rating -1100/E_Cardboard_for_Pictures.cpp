@@ -4,23 +4,21 @@ typedef long long ll;
 
 void solve(){
 	ll n, c; 
-	cin >> n;
-	cin >> c;
+	cin >> n >> c;
 	vector<ll> v(n); 
 
 	for (int i = 0; i<n; i++) cin >> v[i];
 
-    ll ans = -1, l = 0 , r = 1e10;
+    ll ans = -1, l = 1 , r = 1e9;
 
     while(l<=r){
         ll m = l + (r-l)/2;
         ll curr = 0;
 
-        for(auto& x : v){
-            ll tmp = (1LL*x + 2*m);
-            curr += tmp*tmp;
-            if(curr >= c) break;  // early safety check 
-        }
+        for (int i = 0; i<n; i++){
+			curr += (v[i] + 2 * m) * (v[i] + 2 * m);
+			if (curr > c) break; // break early
+		}
 
         if(curr <= c){
             ans = m;
