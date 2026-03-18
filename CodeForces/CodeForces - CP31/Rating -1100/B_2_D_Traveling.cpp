@@ -2,7 +2,6 @@
 using namespace std;
 #define ll long long
 
-
 void solve() {
 	int n, k, s, t;
 	cin >> n >> k >> s >> t;
